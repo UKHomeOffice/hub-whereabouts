@@ -96,5 +96,5 @@ gulp.task('startwatch', function () {
 })
 
 gulp.task('watch', ['startwatch', 'vendor'])
-gulp.task('default', ['assets', 'minify-css', 'minifyHtml', 'vendor'])
+gulp.task('default', ['assets', 'minify-css', 'minifyHtml', 'vendor', 'uglify'])
 gulp.task('inline', ['default', 'inlineHTML'])
