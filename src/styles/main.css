@@ -1,0 +1,18 @@
+body {
+  font-family: arial, sans-serif;
+  color: red;
+  font-size: 62.5%;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.8em;
+}
+
+p {
+  font-size: 1.4em;
+  color: green;
+}
