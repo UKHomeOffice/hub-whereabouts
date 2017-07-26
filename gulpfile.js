@@ -20,7 +20,7 @@ var onError = function (err) {
 
 var config = {
   sass: {
-    src: 'src/styles/main.scss',
+    src: 'src/styles/gov.scss',
     options: {
       noCache: true,
       compass: false,
@@ -40,7 +40,7 @@ gulp.task('assets', function () {
 //   return gulp.src(config.sass.src)
 //     .pipe(plumber({ errorHandler: onError }))
 //     .pipe(sass(config.sass.options)) // Using gulp-sass
-//     .pipe(gulp.dest('dist/styles'))
+//     .pipe(gulp.dest('dist'))
 // })
 
 gulp.task('minify-css', () => {
