@@ -41,16 +41,18 @@ $(document).ready(function () {
 
   // update the team member table
   var addTeamMemberWhereabouts = function (data) {
-    console.log('addTeamMemberWhereabouts', data)
-    var data = data.map(function (data) {
+    // adjust the raw data from the server to match our requirements
+    data = data.map(function (d) {
       return {
-        id: data._id,
-        name: data.member,
-        location: data.whereabouts.map(function (location) {
+        id: d._id,
+        name: d.member,
+        location: d.whereabouts.map(function (location) {
           return location.location
         })
       }
     })
+
+    // select the html table element in which to write out our new rows
     var tab = $('#new-table')
 
     var addPerson = function (person) {
@@ -70,7 +72,9 @@ $(document).ready(function () {
       html += '</tr>'
       tab.append(html)
 
+      // apply the click actions to the newly created links
       $('.update').click(function (e) {
+        // stop the normal browser action when a link is clicked
         e.preventDefault()
         var when = $(this).closest('td').data().date
         var memberId = $(this).closest('tr').data().id
@@ -79,6 +83,7 @@ $(document).ready(function () {
       })
     }
 
+    // loop through the members list and add each one to the person list
     for (var i = 0; i < data.length; i++) {
       addPerson(data[i])
     }
