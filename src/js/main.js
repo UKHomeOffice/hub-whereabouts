@@ -1,19 +1,47 @@
 var $ = jQuery
-$(document).ready(function () {
-  console.log('hello were ready!')
 
+// when the html document is ready
+$(document).ready(function () {
+  /*
+  * send request to server to update a specific member's location
+  * @param memberId  string  the monogo document id of the member we wish to update
+  * @param date      string  date in ISO format
+  * @param where     string  single char representing the new location we're recording
+  */
   var updateMember = function (memberId, date, where) {
+    // send a request to the server
     $.ajax({
       type: 'PUT',
       url: '/team_members',
       data: {member: memberId, date: date, where: where},
       success: function (res) {
+        // we have a result
         console.log('result', res)
       }
     })
   }
 
+  /*
+  * given a single char reference create the html to display that state
+  * @param    string reference code
+  * @returns  string html of a location marker
+  */
+  var getLoc = function (ref) {
+    var col
+    switch (ref) {
+      case 's': col = 'green'
+        break
+      case 'l': col = 'red'
+        break
+      case 'm': col = 'yellow'
+        break
+    }
+    return '<span class="loc ' + col + '">' + ref.toUpperCase() + '</span>'
+  }
+
+  // update the team member table
   var addTeamMemberWhereabouts = function (data) {
+    console.log('addTeamMemberWhereabouts', data)
     var data = data.map(function (data) {
       return {
         id: data._id,
@@ -49,18 +77,6 @@ $(document).ready(function () {
         var loc = $(this).data().loc
         updateMember(memberId, when, loc)
       })
-    }
-    var getLoc = function (ref) {
-      var col
-      switch (ref) {
-        case 's': col = 'green'
-          break
-        case 'l': col = 'red'
-          break
-        case 'm': col = 'yellow'
-          break
-      }
-      return '<span class="loc ' + col + '">' + ref.toUpperCase() + '</span>'
     }
 
     for (var i = 0; i < data.length; i++) {
