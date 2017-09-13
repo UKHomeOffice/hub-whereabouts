@@ -1,12 +1,9 @@
-const db = require("./mongo_config")
-const Whereabouts = require("./whereabouts")
-const TeamMemberSchema = new db.Schema({
-        member: String,
-        whereabouts: [Whereabouts]
+const db = require('./mongo_config')
 
-        })
+const TeamMemberSchema = new db.Schema({
+  member: String
+})
 
 const model = db.model('team_members', TeamMemberSchema)
 
 module.exports = model
-
