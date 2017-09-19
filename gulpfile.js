@@ -1,6 +1,4 @@
 var gulp = require('gulp')
-var async = require('async')
-var run = require('run-sequence')
 var uglify = require('gulp-uglify')
 var concat = require('gulp-concat')
 var plumber = require('gulp-plumber')
@@ -81,14 +79,14 @@ gulp.task('vendor', function () {
 })
 
 gulp.task('startwatch', function () {
-  // nodemon({
-  //   script: 'server.js',
-  //   ext: 'js',
-  //   env: { 'NODE_ENV': 'development' },
-  //   cwd: __dirname,
-  //   ignore: ['node_modules/**'],
-  //   watch: ['server.js', 'config.js', 'src/node/*']
-  // })
+  nodemon({
+    script: 'server.js',
+    ext: 'js',
+    env: { 'NODE_ENV': 'development' },
+    cwd: __dirname,
+    ignore: ['node_modules/**'],
+    watch: ['server.js', 'server/*']
+  })
   gulp.watch('src/*.html', ['minifyHtml'])
   // gulp.watch('src/app/modules/**/*.html', ['templateAndUglify'])
   gulp.watch(['src/js/**/*.js'], ['uglify'])
