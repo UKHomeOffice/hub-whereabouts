@@ -1,3 +1,5 @@
+/* global _ jQuery moment */
+
 var $ = jQuery
 
 // when the html document is ready
@@ -41,22 +43,13 @@ $(document).ready(function () {
 
   // update the team member table
   var addTeamMemberWhereabouts = function (data) {
-    // adjust the raw data from the server to match our requirements
-    data = data.map(function (d) {
-      return {
-        id: d._id,
-        name: d.member,
-        location: d.whereabouts.map(function (location) {
-          return location.location
-        })
-      }
-    })
+    console.log(data)
 
     // select the html table element in which to write out our new rows
     var tab = $('#new-table')
 
     var addPerson = function (person) {
-      var html = '<tr data-id="' + person.id + '"><td>' + person.name + '</td>'
+      var html = '<tr data-id="' + person.id + '"><td>' + person.name + ' ' + person._id + '</td>'
       for (var i = 0; i < 5; i++) {
         var wc = new Date(2017, 8, 11 + i, 12)
 
@@ -64,8 +57,13 @@ $(document).ready(function () {
         html += '<a href="#" class="update" data-loc="S">S</a> '
         html += '<a href="#" class="update" data-loc="L">L</a> '
         html += '<a href="#" class="update" data-loc="H">H</a> '
-        if (person.location[i]) {
-          html += getLoc(person.location[i])
+
+        var w = _.find(person.whereabouts, function (where) {
+          return where.date.substr(0, 10) === moment(wc).format('YYYY-MM-DD')
+        })
+
+        if (w) {
+          html += getLoc(w.location)
         }
         html += '</td>'
       }
@@ -90,7 +88,7 @@ $(document).ready(function () {
   }
 
   $.get({
-    url: '/team_members',
+    url: '/member/whereabouts',
     success: addTeamMemberWhereabouts
   })
 

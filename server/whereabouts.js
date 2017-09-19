@@ -1,14 +1,16 @@
 const db = require('./mongo_config')
 const mongoose = require('mongoose')
-// const teamMembers = require('./team_member')
-const Whereabouts = new db.Schema({
+const WhereAboutsSchema = new db.Schema({
   member: {
     required: true,
     type: mongoose.Schema.Types.ObjectId,
     ref: 'team_member'
   },
   location: {type: String, default: 'unknown'},
-  date: Date
+  date: {
+    type: Date,
+    required: true
+  }
 })
 
-module.exports = Whereabouts
+module.exports = db.model('where_abouts', WhereAboutsSchema)

@@ -1,7 +1,11 @@
 const db = require('./mongo_config')
 
 const TeamMemberSchema = new db.Schema({
-  member: String
+  name: {
+    type: String,
+    unique: true,
+    required: true
+  }
 })
 
 const model = db.model('team_members', TeamMemberSchema)
