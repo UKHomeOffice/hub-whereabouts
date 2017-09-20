@@ -1,28 +1,58 @@
 var $ = jQuery
-$(document).ready(function () {
-  console.log('hello were ready!')
 
+// when the html document is ready
+$(document).ready(function () {
+  /*
+  * send request to server to update a specific member's location
+  * @param memberId  string  the monogo document id of the member we wish to update
+  * @param date      string  date in ISO format
+  * @param where     string  single char representing the new location we're recording
+  */
   var updateMember = function (memberId, date, where) {
+    // send a request to the server
     $.ajax({
       type: 'PUT',
       url: '/team_members',
       data: {member: memberId, date: date, where: where},
       success: function (res) {
+        // we have a result
         console.log('result', res)
       }
     })
   }
 
+  /*
+  * given a single char reference create the html to display that state
+  * @param    string reference code
+  * @returns  string html of a location marker
+  */
+  var getLoc = function (ref) {
+    var col
+    switch (ref) {
+      case 's': col = 'green'
+        break
+      case 'l': col = 'red'
+        break
+      case 'm': col = 'yellow'
+        break
+    }
+    return '<span class="loc ' + col + '">' + ref.toUpperCase() + '</span>'
+  }
+
+  // update the team member table
   var addTeamMemberWhereabouts = function (data) {
-    var data = data.map(function (data) {
+    // adjust the raw data from the server to match our requirements
+    data = data.map(function (d) {
       return {
-        id: data._id,
-        name: data.member,
-        location: data.whereabouts.map(function (location) {
+        id: d._id,
+        name: d.member,
+        location: d.whereabouts.map(function (location) {
           return location.location
         })
       }
     })
+
+    // select the html table element in which to write out our new rows
     var tab = $('#new-table')
 
     var addPerson = function (person) {
@@ -42,7 +72,9 @@ $(document).ready(function () {
       html += '</tr>'
       tab.append(html)
 
+      // apply the click actions to the newly created links
       $('.update').click(function (e) {
+        // stop the normal browser action when a link is clicked
         e.preventDefault()
         var when = $(this).closest('td').data().date
         var memberId = $(this).closest('tr').data().id
@@ -50,19 +82,8 @@ $(document).ready(function () {
         updateMember(memberId, when, loc)
       })
     }
-    var getLoc = function (ref) {
-      var col
-      switch (ref) {
-        case 's': col = 'green'
-          break
-        case 'l': col = 'red'
-          break
-        case 'm': col = 'yellow'
-          break
-      }
-      return '<span class="loc ' + col + '">' + ref.toUpperCase() + '</span>'
-    }
 
+    // loop through the members list and add each one to the person list
     for (var i = 0; i < data.length; i++) {
       addPerson(data[i])
     }
